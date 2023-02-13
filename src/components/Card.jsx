@@ -2,7 +2,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import Books from "../books/fantasy.json";
 
-function MyCard() {
+function MyCard(props) {
   return (
     <Container>
       <Row>
@@ -14,9 +14,15 @@ function MyCard() {
                   className="m-2"
                   /* style={{ width: "18rem" }}  */ key={index}
                 >
-                  <Card.Img variant="top" src={elem.img} />
+                  <Card.Img
+                    variant="top"
+                    src={elem.img}
+                    style={{ height: "300px" }}
+                  />
                   <Card.Body>
-                    <Card.Title>{elem.title}</Card.Title>
+                    <Card.Title style={{ fontSize: props.font }}>
+                      {elem.title}
+                    </Card.Title>
                     <Card.Text>{elem.price + " €"}</Card.Text>
                   </Card.Body>
                 </Card>
