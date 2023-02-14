@@ -1,16 +1,18 @@
 import { InputGroup, Form } from "react-bootstrap";
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import CommentList from "./CommentList";
 import AddComment from "./AddComment";
 
-class CommentArea extends Component {
-  state = {
+const CommentArea = (props) => {
+  /*  state = {
     comment: [],
     rate: 0,
     elementId: "",
-  };
+  }; */
 
-  fetchComments = async (bookId) => {
+  const [comment, setComment] = useState([]);
+
+  const fetchComments = async (bookId) => {
     try {
       const response = await fetch(
         `https://striveschool-api.herokuapp.com/api/comments/${bookId}`,
@@ -24,7 +26,8 @@ class CommentArea extends Component {
 
       if (response.ok) {
         const data = await response.json();
-        this.setState({ comment: data });
+        /* this.setState({ comment: data }); */
+        setComment(data);
       } else {
         console.log("errore di response", response);
       }
@@ -33,28 +36,31 @@ class CommentArea extends Component {
     }
   };
 
-  componentDidMount() {
+  /*   componentDidMount() {
     this.props.asin && this.fetchComments(this.props.asin);
-  }
+  } */
 
-  componentDidUpdate(prevProps) {
+  /*  componentDidUpdate(prevProps) {
     if (prevProps.asin !== this.props.asin) {
       this.fetchComments(this.props.asin);
     }
-  }
+  } */
 
-  render() {
-    return (
-      <>
-        <CommentList commentsArray={this.state.comment} />
-        <InputGroup>
-          <InputGroup.Text>Comment</InputGroup.Text>
-          <Form.Control as="textarea" aria-label="With textarea" />
-        </InputGroup>
-        <AddComment />
-      </>
-    );
-  }
-}
+  useEffect(() => {
+    console.log("QUESTO è asin", props.asin);
+    fetchComments(props.asin);
+  }, [props.asin]);
+
+  return (
+    <>
+      <CommentList commentsArray={comment} />
+      <InputGroup>
+        <InputGroup.Text>Comment</InputGroup.Text>
+        <Form.Control as="textarea" aria-label="With textarea" />
+      </InputGroup>
+      <AddComment />
+    </>
+  );
+};
 
 export default CommentArea;
